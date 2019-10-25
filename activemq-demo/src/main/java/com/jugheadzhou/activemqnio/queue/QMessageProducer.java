@@ -63,17 +63,17 @@ public class QMessageProducer {
             messageProducer.send(textMessage);
             System.out.println("发送TextMessage消息："+textMessage.getText());
 
-//            //发送MapMessage消息
-//            MapMessage mapMessage = session.createMapMessage();
-//            mapMessage.setString("k1","v1");
-//            messageProducer.send(mapMessage);
-//            System.out.println("发送MapMessage消息："+textMessage.getText());
-//
-//            //发送对象消息
-//            User user = new User(1L,"小明",9);
-//            ObjectMessage objectMessage = session.createObjectMessage();
-//            objectMessage.setObject(user);
-//            messageProducer.send(objectMessage);
+            //发送MapMessage消息
+            MapMessage mapMessage = session.createMapMessage();
+            mapMessage.setString("k1","v1");
+            messageProducer.send(mapMessage);
+            System.out.println("发送MapMessage消息："+textMessage.getText());
+
+            //发送对象消息
+            User user = new User(1L,"小明",9);
+            ObjectMessage objectMessage = session.createObjectMessage();
+            objectMessage.setObject(user);
+            messageProducer.send(objectMessage);
         }
 
         //关闭连接
