@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:amq="http://activemq.apache.org/schema/core"
+	xmlns:jms="http://www.springframework.org/schema/jms"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd   
+        http://www.springframework.org/schema/context   
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+        http://activemq.apache.org/schema/core
+        http://activemq.apache.org/schema/core/activemq-core-5.15.3.xsd">
+        
+	<bean id="clientMQConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+		<property name="brokerURL" value="${mq.url}" />
+		<property name="userName" value="${mq.username}" />
+		<property name="password" value="${mq.password}" />
+		<property name="clientID" value="${mq.clientId}" />
+		<property name="useAsyncSend" value="true" />
+	</bean>
+	<!-- Spring Caching连接工厂 -->
+	<!-- Spring用于管理真正的ConnectionFactory的ConnectionFactory -->
+	<bean id="clientConnectionFactory"
+		class="org.springframework.jms.connection.SingleConnectionFactory">  
+        <property name="clientId" value="${mq.clientId}" />
+        <property name="targetConnectionFactory" ref="clientMQConnectionFactory" />  
+		<property name="reconnectOnException" value="true" />
+	</bean>
+	<bean id="addScoreQueueListener" class="com.jugheadzhou.base.consumer.listener.AddScoreQueueListener" />
+	<bean id="deleteScoreTopicListener" class="com.jugheadzhou.base.consumer.listener.DeleteScoreTopicListener" />
+
+	<!-- 定义Topic监听器 -->
+	<jms:listener-container destination-type="durableTopic"
+		recovery-interval="30000" container-type="default" connection-factory="clientConnectionFactory"
+		acknowledge="auto" client-id="${mq.clientId}">
+		 <jms:listener destination="delete_score_topic_destination"
+					   subscription="delete_score_topic_sub_name" ref="deleteScoreTopicListener" />
+	</jms:listener-container>
+
+	<!--定义Queue监听器 -->
+	<jms:listener-container destination-type="queue"
+							recovery-interval="30000" container-type="default" connection-factory="clientConnectionFactory"
+							acknowledge="auto" client-id="${mq.clientId}">
+		<jms:listener destination="add_score_queue_destination" ref="addScoreQueueListener" />
+	</jms:listener-container>
+</beans>

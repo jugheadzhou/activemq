@@ -1,0 +1,16 @@
+server:
+  port: 8888
+
+spring:
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+    # 是否启用内存模型 默认是true，意思就是使用安装的mq,如果是false，这是随项目启动而启动一个activemq实例（broker）
+    in-memory: true
+    packages:
+      # 信任所有包
+      trust-all: true
+    pool:
+      # 默认也是false，不替换现有的连接池，如果是true替换，这需要引入依赖
+      enabled: false

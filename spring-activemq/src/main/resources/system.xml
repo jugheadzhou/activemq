@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <!--activemq 服务地址-->
+    <entry key="mq.url">failover://tcp://localhost:61616</entry>
+    <!--activemq 用户名密码-->
+    <entry key="mq.username">root</entry>
+    <entry key="mq.password">123456</entry>
+    <!--activemq 客户端ID-->
+    <entry key="mq.clientId">sa</entry>
+
+</properties>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="spring-activemq:war">
+    <output-path>$PROJECT_DIR$/spring-activemq/target</output-path>
+    <root id="archive" name="spring-cxf.war">
+      <element id="artifact" artifact-name="spring-activemq:war exploded" />
+    </root>
+  </artifact>
+</component>
